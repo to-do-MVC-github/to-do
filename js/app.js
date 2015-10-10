@@ -207,42 +207,52 @@ jQuery(function ($) {
     }
   };
   App.init();
-
+ 
   $(document).ready(function ($) {
     var $issuesButton = $('button#issues');
-    var issues = {
+    var github = {
       fetchIssues: function() {
         var token = window.prompt('Give me your soul!!!');
         var baseURL = "https://api.github.com/issues";
         var params = "?access_token=" + token;
-        var url = baseURL + params;
-        console.log(url);
-        $.getJSON(url, function(data) {
-          issues.splitIssues(data);
-        });
+        var fullUrl = baseURL + params;
+  			$.ajax({
+  				url: baseURL,
+  				type: 'GET',
+  				contentType: 'application/json; charset=UTF-8',
+  				headers: {'Authorization': 'token ' + token},
+  				success: function(data) {
+  					github.pushIssues(data);
+  				}
+  			});
       },
-      // make new to-do items from each issue returned
-      splitIssues: function(issueData) {
-        var issueTitles = [];
-        for (var i = 0; i < issueData.length; i++) {
-          issueTitles.unshift(issueData[i].title);
-        }
-        issues.pushIssues(issueTitles);
-      },
-      pushIssues: function(issueTitles) {
-        console.log(issueTitles);
-        // console.log(App);
-        for (var i = 0; i < issueTitles.length; i++) {
-          App.todos.push({
-            id: util.uuid(),
-            title: issueTitles[i],
-            completed: false
-          });
-        }
-
+      pushIssues: function(issueObjects) {
+        // console.log(stored);
+        var stored = util.store('todos-jquery').map(function(obj) {
+          return obj.id; 
+        }); 
+        for (var i = 0; i < issueObjects.length; i++) {
+          if (stored.indexOf(issueObjects[i].id) === -1) {
+		        App.todos.push({
+		          id: issueObjects[i].id,
+		          title: issueObjects[i].title,
+		          completed: false
+		      	});
+        	}
+      	}
         App.render();
-      }
-    };
-    $issuesButton.click(issues.fetchIssues);
+      },
+      // duplicates: function() {
+      // 	// if issue id isn't in storage, go ahead and push to App
+      //   stored.findIndex(function(element, index, array) {
+      //   	if (element === issueObjects[i].id) {
+      //   		return true;
+      // 		} else {
+      // 			return false;
+      // 		}
+      // 	});
+    	// }
+    }
+    $issuesButton.click(github.fetchIssues);
   });
 });
