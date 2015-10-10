@@ -40,13 +40,12 @@ jQuery(function ($) {
     updateIssue: function(todo) {
       var token = prompt('Give me your soul!!!');
       // enter a new todo issue and have it add to github
-      var completed = (todo.completed ? 'closed' : 'open')
-      console.log(completed);
+      var completed = (todo.completed ? 'open' : 'closed')
       if ('repo' in todo) {
         $.ajax({
           url: todo.url,
           type: 'PATCH',
-          data: {'state': completed},
+          data: JSON.stringify({'state': completed}),
           dataType: 'json',
           contentType: 'application/json; charset=UTF-8',
           headers: {'Authorization': 'token ' + token},
@@ -222,7 +221,6 @@ jQuery(function ($) {
     toggle: function (e) {
       var i = this.indexFromEl(e.target);
       github.updateIssue(this.todos[i]);
-      console.log(this.todos[i].completed)
       this.todos[i].completed = !this.todos[i].completed;
       this.render();
     },
