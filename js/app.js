@@ -242,16 +242,6 @@ jQuery(function ($) {
       	}
         App.render();
       },
-      // duplicates: function() {
-      // 	// if issue id isn't in storage, go ahead and push to App
-      //   stored.findIndex(function(element, index, array) {
-      //   	if (element === issueObjects[i].id) {
-      //   		return true;
-      // 		} else {
-      // 			return false;
-      // 		}
-      // 	});
-    	// }
     }
     $issuesButton.click(github.fetchIssues);
   });
