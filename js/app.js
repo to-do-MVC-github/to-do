@@ -2,6 +2,67 @@
 jQuery(function ($) {
   'use strict';
 
+
+
+  var github = {
+    getToken: function() {
+      this.token = this.token || window.prompt('Please enter your GitHub access token:');
+    },
+    fetchIssues: function() {
+      var baseURL = "https://api.github.com/issues";
+      var params = "?access_token=" + this.token;
+      var fullUrl = baseURL + params;
+      $.ajax({
+        url: baseURL,
+        type: 'GET',
+        contentType: 'application/json; charset=UTF-8',
+        headers: {'Authorization': 'token ' + this.token},
+        success: function(data) {
+          github.pushIssues(data);
+        }
+      });
+    },
+    pushIssues: function(issueObjects) {
+      var stored = util.store('todos-jquery').map(function(obj) {
+        return obj.id;
+      });
+      for (var i = 0; i < issueObjects.length; i++) {
+        if (stored.indexOf(issueObjects[i].id) === -1) {
+          App.todos.push({
+            id: issueObjects[i].id,
+            url: issueObjects[i].url,
+            repo: issueObjects[i].repository.name,
+            number: issueObjects[i].number,
+            title: issueObjects[i].title,
+            completed: false
+          });
+        }
+      }
+      App.render();
+    },
+    updateIssue: function(todo) {
+      var completed = (todo.completed ? 'open' : 'closed')
+      if ('repo' in todo) {
+        $.ajax({
+          url: todo.url,
+          type: 'PATCH',
+          data: JSON.stringify({'state': completed}),
+          dataType: 'json',
+          contentType: 'application/json; charset=UTF-8',
+          headers: {'Authorization': 'token ' + this.token},
+          success: function(data) {
+            github.pushIssues(data);
+          }
+        });
+      }
+    }
+  }
+
+  $('#issues').click(function() {
+    github.getToken();
+    github.fetchIssues();
+  });
+
   Handlebars.registerHelper('eq', function (a, b, options) {
     return a === b ? options.fn(this) : options.inverse(this);
   });
@@ -164,6 +225,7 @@ jQuery(function ($) {
     },
     toggle: function (e) {
       var i = this.indexFromEl(e.target);
+      github.updateIssue(this.todos[i]);
       this.todos[i].completed = !this.todos[i].completed;
       this.render();
     },
@@ -207,42 +269,4 @@ jQuery(function ($) {
     }
   };
   App.init();
- 
-  $(document).ready(function ($) {
-    var $issuesButton = $('button#issues');
-    var github = {
-      fetchIssues: function() {
-        var token = window.prompt('Give me your soul!!!');
-        var baseURL = "https://api.github.com/issues";
-        var params = "?access_token=" + token;
-        var fullUrl = baseURL + params;
-  			$.ajax({
-  				url: baseURL,
-  				type: 'GET',
-  				contentType: 'application/json; charset=UTF-8',
-  				headers: {'Authorization': 'token ' + token},
-  				success: function(data) {
-  					github.pushIssues(data);
-  				}
-  			});
-      },
-      pushIssues: function(issueObjects) {
-        // console.log(stored);
-        var stored = util.store('todos-jquery').map(function(obj) {
-          return obj.id; 
-        }); 
-        for (var i = 0; i < issueObjects.length; i++) {
-          if (stored.indexOf(issueObjects[i].id) === -1) {
-		        App.todos.push({
-		          id: issueObjects[i].id,
-		          title: issueObjects[i].title,
-		          completed: false
-		      	});
-        	}
-      	}
-        App.render();
-      },
-    }
-    $issuesButton.click(github.fetchIssues);
-  });
 });
