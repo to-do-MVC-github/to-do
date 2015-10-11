@@ -2,18 +2,21 @@
 jQuery(function ($) {
   'use strict';
 
-  var $issuesButton = $('button#issues');
+
+
   var github = {
+    getToken: function() {
+      this.token = this.token || window.prompt('Please enter your GitHub access token:');
+    },
     fetchIssues: function() {
-      var token = window.prompt('Give me your soul!!!');
       var baseURL = "https://api.github.com/issues";
-      var params = "?access_token=" + token;
+      var params = "?access_token=" + this.token;
       var fullUrl = baseURL + params;
       $.ajax({
         url: baseURL,
         type: 'GET',
         contentType: 'application/json; charset=UTF-8',
-        headers: {'Authorization': 'token ' + token},
+        headers: {'Authorization': 'token ' + this.token},
         success: function(data) {
           github.pushIssues(data);
         }
@@ -38,8 +41,6 @@ jQuery(function ($) {
       App.render();
     },
     updateIssue: function(todo) {
-      var token = prompt('Give me your soul!!!');
-      // enter a new todo issue and have it add to github
       var completed = (todo.completed ? 'open' : 'closed')
       if ('repo' in todo) {
         $.ajax({
@@ -48,7 +49,7 @@ jQuery(function ($) {
           data: JSON.stringify({'state': completed}),
           dataType: 'json',
           contentType: 'application/json; charset=UTF-8',
-          headers: {'Authorization': 'token ' + token},
+          headers: {'Authorization': 'token ' + this.token},
           success: function(data) {
             github.pushIssues(data);
           }
@@ -56,7 +57,11 @@ jQuery(function ($) {
       }
     }
   }
-  $issuesButton.click(github.fetchIssues)
+
+  $('#issues').click(function() {
+    github.getToken();
+    github.fetchIssues();
+  });
 
   Handlebars.registerHelper('eq', function (a, b, options) {
     return a === b ? options.fn(this) : options.inverse(this);
