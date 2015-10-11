@@ -1,33 +1,29 @@
-# jQuery TodoMVC Example
+# to-do
+By [Garrett Sand](https://github.com/vnmnd) & [Scott Macpherson](https://github.com/scottmacphersonmusic)
 
-> jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.
+### Description
+A extension of the [TodoMVC](http://todomvc.com/examples/jquery/#/all) jQuery example that allows you interact with issues from your GitHub repositories.
 
-> _[jQuery - jquery.com](http://jquery.com)_
+### Usage
+To import all of your GitHub issues, click the '+GitHub Issues' button beneath the main list window.  You will be prompted to enter your GitHub access token.
 
+If you don't have an access token, [create one](https://github.com/settings/tokens)
 
-## Learning jQuery
+All issues **for which you are the assignee** in your repositories will be added to the to-do list.
 
-The [jQuery website](http://jquery.com) is a great resource for getting started.
+When you check one of your GitHub issue items as completed, that issue will be closed on GitHub.  Likewise, if an issue is completed but not yet deleted from the to-do list, unchecking it will open the issue again on GitHub.
 
-Here are some links you may find helpful:
+### Contributing
+1. Fork It
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create new Pull Request
 
-* [Learning Center](http://learn.jquery.com/)
-* [API Reference](http://api.jquery.com)
-* [Plugins](http://plugins.jquery.com)
-* [Browser Support](http://jquery.com/browser-support)
-* [Blog](http://blog.jquery.com)
+### Credit
+[jQuery](https://api.jquery.com/) and [GitHub](https://developer.github.com/v3/) API documentation was referred to extensively
 
-Articles and guides from the community:
+This README was edited at [dillinger.io](dillinger.io)
 
-* [Try jQuery](http://try.jquery.com)
-* [jQuery Annotated Source](http://github.com/robflaherty/jquery-annotated-source)
-* [10 Things I Learned From the jQuery Source](http://paulirish.com/2010/10-things-i-learned-from-the-jquery-source)
-
-Get help from other jQuery users:
-
-* [jQuery on StackOverflow](http://stackoverflow.com/questions/tagged/jquery)
-* [Forums](http://forum.jquery.com)
-* [jQuery on Twitter](http://twitter.com/jquery)
-* [jQuery on Google +](https://plus.google.com/102828491884671003608/posts)
-
-_If you have other helpful links to share, or find any of the links above no longer work, please [let us know](https://github.com/tastejs/todomvc/issues)._
+### License
+to-do is released under the [MIT License](http://opensource.org/licenses/MIT)
