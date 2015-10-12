@@ -2,7 +2,7 @@
 By [Garrett Sand](https://github.com/vnmnd) & [Scott Macpherson](https://github.com/scottmacphersonmusic)
 
 ### Description
-A extension of the [TodoMVC](http://todomvc.com/examples/jquery/#/all) jQuery example that allows you interact with issues from your GitHub repositories.
+An extension of the [TodoMVC](http://todomvc.com/examples/jquery/#/all) jQuery example that allows you interact with issues from your GitHub repositories.
 
 ### Usage
 To import all of your GitHub issues, click the '+GitHub Issues' button beneath the main list window.  You will be prompted to enter your GitHub access token.
